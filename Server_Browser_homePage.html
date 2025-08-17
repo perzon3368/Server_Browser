@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Godot Server Browser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            padding: 20px;
+        }
+        h1 {
+            color: #00bfff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #444;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #2a2a2a;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌌 Godot Server Browser</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Server Name</th>
+                <th>Map</th>
+            </tr>
+        </thead>
+        <tbody id="server-list">
+            <!-- Server rows will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function loadServers() {
+            try {
+                const response = await fetch('https://serverbrowser.w3spaces.com/servers.json');
+                const servers = await response.json();
+
+                const tableBody = document.getElementById('server-list');
+                tableBody.innerHTML = '';
+
+                servers.forEach(server => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${server.name}</td>
+                        <td>${server.map}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Failed to load servers:', error);
+            }
+        }
+
+        loadServers();
+    </script>
+</body>
+</html>
